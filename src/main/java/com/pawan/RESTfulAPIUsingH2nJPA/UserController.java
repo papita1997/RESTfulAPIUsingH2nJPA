@@ -1,7 +1,9 @@
 package com.pawan.RESTfulAPIUsingH2nJPA;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,8 +19,15 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public User UserById(@PathVariable int id){
-        return userService.getUserById(id);
+    public ResponseEntity<User> UserById(@PathVariable int id){
+        if(userService.getUserById(id).isPresent()){
+            return new ResponseEntity<>(userService.getUserById(id).get(), HttpStatus.OK);
+        }
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add("Message","User not found");
+//        return new ResponseEntity<>(headers,HttpStatus.NOT_FOUND);
+        //or
+        return ResponseEntity.notFound().header("Message","User not found").build();
     }
 
     @PostMapping("/users/adduser")
