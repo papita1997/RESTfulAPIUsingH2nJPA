@@ -1,6 +1,14 @@
 package com.pawan.RESTfulAPIUsingH2nJPA;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class User {
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
         private int id;
         private String name;
         private String language;
@@ -33,6 +41,10 @@ public class User {
             this.id = id;
             this.name = name;
             this.language = language;
+        }
+
+        public User(){
+
         }
 
 }

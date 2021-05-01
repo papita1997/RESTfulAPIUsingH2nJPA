@@ -1,42 +1,34 @@
 package com.pawan.RESTfulAPIUsingH2nJPA;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class UserService {
-    List<User> users = new ArrayList<>(Arrays.asList(
-            new User(1,"pawan","java"),
-            new User(2,"aditya","python"),
-            new User(3,"priyanshu","react js")
-    ));
+
+    @Autowired
+    UserRepository userRepository;
 
     public List<User> allUsers(){
-        return users;
+
+        return userRepository.findAll();
     }
 
     public User getUserById(int id){
-        return users.stream().filter(user -> user.getId() == id).findFirst().get();
+        return userRepository.findById(id).orElseThrow();
     }
 
     public void addUser(User user){
-        users.add(user);
+        userRepository.save(user);
     }
 
     public void deleteUserById(int id){
-        users.removeIf(user -> user.getId() == id);
+        userRepository.deleteById(id);
     }
 
-    public void updateUser(User user , int id){
-        for(User u:users){
-            if(u.getId() == id){
-                users.remove(u);
-                users.add(user);
-                break;
-            }
-        }
+    public void updateUser(User user){
+        userRepository.save(user);
     }
 }
